@@ -26,6 +26,11 @@ if (!EXT_API_KEY) {
   console[console.warn ? 'warn' : 'log']('External API key not provided. If you want a security filter use the EXT_API_KEY environment variable as explained on the README file.');
 }
 
+// Healthcheck used by kubernetes does not check api key
+app.get('/admin/ping', (req, res) => {
+  res.send("pong");
+});
+
 app.use((req, res, next) => {
   if (!EXT_API_KEY || req.headers.authorization == EXT_API_KEY) {
     next();
